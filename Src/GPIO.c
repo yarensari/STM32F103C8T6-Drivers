@@ -36,22 +36,22 @@ void GPIO_Init(GPIO_TypeDef_t *GPIOx, GPIO_InitTypeDef_t *GPIOConfigStruct){
 		if(fakePosition == lastPosition){
 			uint32_t config = 0x0U;
 			config = GPIOx->CR[position >> 3U];
-			config &= ~( 0xFU << ( (position & 7U) >> 2) );
+			config &= ~( 0xFU << ( (position & 7U) << 2) );
 			/* Mode Config*/
 			switch(GPIOConfigStruct->Mode){
 				case GPIO_MODE_ANALOG:
-					config |= ( (GPIO_CR_MODE_INPUT + GPIO_CR_CNF_ANALOG) << ( (position & 7U) >> 2) ) ;
+					config |= ( (GPIO_CR_MODE_INPUT + GPIO_CR_CNF_ANALOG) << ( (position & 7U) << 2) ) ;
 					break;
 				case GPIO_MODE_INPUT:
 					/* Pull Up - Pull Down Config */
 					if(GPIOConfigStruct->PuPd == GPIO_PUPD_NOPULL){
-						config |= ( (GPIO_CR_MODE_INPUT + GPIO_CR_CNF_INPUT_FLOATING) << ( (position & 7U) >> 2) );
+						config |= ( (GPIO_CR_MODE_INPUT + GPIO_CR_CNF_INPUT_FLOATING) << ( (position & 7U) << 2) );
 					}else if(GPIOConfigStruct->PuPd == GPIO_PUPD_PULLUP){
-						config |= ( (GPIO_CR_MODE_INPUT + GPIO_CR_CNF_PUPD) << ( (position & 7U) >> 2) );
+						config |= ( (GPIO_CR_MODE_INPUT + GPIO_CR_CNF_PUPD) << ( (position & 7U) << 2) );
 						/* Set ODR */
 						GPIOx->ODR |= (0x1 << position);
 					}else{ /* PULL DOWN*/
-						config |= ( (GPIO_CR_MODE_INPUT + GPIO_CR_CNF_PUPD) << ( (position & 7U) >> 2) );
+						config |= ( (GPIO_CR_MODE_INPUT + GPIO_CR_CNF_PUPD) << ( (position & 7U) << 2) );
 						/* Set ODR */
 						GPIOx->ODR &= ~(0x1 << position);
 					}
@@ -59,17 +59,17 @@ void GPIO_Init(GPIO_TypeDef_t *GPIOx, GPIO_InitTypeDef_t *GPIOConfigStruct){
 				case GPIO_MODE_OUTPUT:
 					/* Speed and Push Pull - Open Drain Config */
 					if(GPIOConfigStruct->OTYPE == GPIO_OTYPE_PP){
-						config |= ( (GPIOConfigStruct->Speed + GPIO_CR_CNF_OUTPUT_PP) << ( (position & 7U) >> 2) );
+						config |= ( (GPIOConfigStruct->Speed + GPIO_CR_CNF_OUTPUT_PP) << ( (position & 7U) << 2) );
 					}else if(GPIOConfigStruct->OTYPE == GPIO_OTYPE_OD){
-						config |= ( (GPIOConfigStruct->Speed + GPIO_CR_CNF_OUTPUT_OD) << ( (position & 7U) >> 2) );
+						config |= ( (GPIOConfigStruct->Speed + GPIO_CR_CNF_OUTPUT_OD) << ( (position & 7U) << 2) );
 					}
 					break;
 				case GPIO_MODE_AF:
 					/* Speed and Push Pull - Open Drain Config */
 					if(GPIOConfigStruct->OTYPE == GPIO_OTYPE_PP){
-						config |= ( (GPIOConfigStruct->Speed + GPIO_CR_CNF_AF_PP) << ( (position & 7U) >> 2) );
+						config |= ( (GPIOConfigStruct->Speed + GPIO_CR_CNF_AF_PP) << ( (position & 7U) << 2) );
 					}else if(GPIOConfigStruct->OTYPE == GPIO_OTYPE_OD){
-						config |= ( (GPIOConfigStruct->Speed + GPIO_CR_CNF_AF_OD) << ( (position & 7U) >> 2) );
+						config |= ( (GPIOConfigStruct->Speed + GPIO_CR_CNF_AF_OD) << ( (position & 7U) << 2) );
 					}
 					break;
 				default:
