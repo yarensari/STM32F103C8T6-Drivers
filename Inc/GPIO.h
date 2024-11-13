@@ -4,6 +4,19 @@
 #include "../myDrivers/Inc/stm32f103xx.h"
 
 /*
+ * AFIO SPI1 Remap Macro Definitions
+ *
+ */
+
+#define AFIO_SP1_REMAP_ENABLE()		do{ uint32_t tempValue = 0; \
+										SET_BIT(AFIO->MAPR, AFIO_MAPR_SPI1_REMAP); \
+										tempValue = READ_BIT(AFIO->MAPR, AFIO_MAPR_SPI1_REMAP); \
+										UNUSED(tempValue); \
+									}while(0)
+
+#define AFIO_SP1_REMAP_DISABLE()	CLEAR_BIT(AFIO->MAPR, AFIO_MAPR_SPI1_REMAP);
+
+/*
  * @def_group GPIO_Pins
  *
  */
@@ -69,11 +82,11 @@ typedef enum{
 
 typedef struct{
 
-	uint32_t pinNumber;  	/*!< GPIO Pin Numbers @def_group GPIO_Pins 	    */
-	uint32_t Mode;		 	/*!< GPIO Pin Numbers @def_group GPIO_Pin_Modes    */
+	uint32_t pinNumber;  	/*!< GPIO Pin Numbers @def_group GPIO_Pins 	    	*/
+	uint32_t Mode;		 	/*!< GPIO Pin Numbers @def_group GPIO_Pin_Modes     */
 	uint32_t OTYPE;		 	/*!< GPIO Pin Numbers @def_group GPIO_Otype_Modes	*/
 	uint32_t PuPd; 		 	/*!< GPIO Pin Numbers @def_group GPIO_PuPd_Modes 	*/
-	uint32_t Speed;		 	/*!< GPIO Pin Numbers @def_group GPIO_Speed_Modes  */
+	uint32_t Speed;		 	/*!< GPIO Pin Numbers @def_group GPIO_Speed_Modes   */
 	uint32_t Alternate;
 
 }GPIO_InitTypeDef_t;
